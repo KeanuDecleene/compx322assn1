@@ -1,0 +1,9 @@
+.home {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  #homeButton {
+    color: white;
+    background-color: black;
+  }
+}
