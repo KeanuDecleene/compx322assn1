@@ -1,22 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!--setting title and css file to use-->
     <meta charset="utf-8" />
     <title>Event Manager</title>
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./script.js"></script>
   </head>
   <body>
-    <div class="home">
-      <!--setting up headers and inputs-->
-      <h1>Local Events</h1>
-      <input
-        type="text"
-        id="usertext"
-        autocomplete="off"
-        onKeyUp="updateEventInfo()"
-      />
-      <button id="homeButton" onclick="refreshEventsList()">Home</button>
+    <button id="homeButton" onclick="refreshEventsList()">Home</button>
+    <h1>Upcoming Local Events</h1>
+    <div class="eventList">
+      <ul id="events">
+        <!--list items will be populated by js-->
+        <li data-event="market">Farmers market</li>
+        <li data-event="hdkhfewjk">dhjdjkh</li>
+      </ul>
+    </div>
+
+    <div class="eventDetails" style="display: none">
+      <h2>Event Details</h2>
+      <form id="eventForm">
+        <label for="eventName">Name:</label>
+        <input type="text" id="eventName" />
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" />
+
+        <label for="month">Month:</label>
+        <input type="text" id="month" />
+
+        <label for="day">Day:</label>
+        <input type="text" id="day" />
+
+        <label for="time">Time:</label>
+        <input type="text" id="time" />
+
+        <label for="cost">Cost:</label>
+        <input type="text" id="cost" />
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" />
+
+        <label for="notes">Notes:</label>
+        <textarea id="notes"></textarea>
+
+        <div id="buttonContainer">
+          <button type="button" id="updateEventBtn" onclick="updateEvent()">
+            Update
+          </button>
+          <button type="button" id="getWeatherBtn" onclick="getWeather()">
+            Get Weather
+          </button>
+        </div>
+      </form>
     </div>
   </body>
 </html>
