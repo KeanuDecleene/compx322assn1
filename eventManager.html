@@ -4,16 +4,14 @@
     <meta charset="utf-8" />
     <title>Event Manager</title>
     <link rel="stylesheet" href="./styles.css" />
-    <script src="./script.js"></script>
+    <script src="./events.js"></script>
   </head>
   <body>
-    <button id="homeButton" onclick="refreshEventsList()">Home</button>
+    <button id="homeButton" onclick="fetchEvents()">Home</button>
     <h1>Upcoming Local Events</h1>
     <div class="eventList">
       <ul id="events">
         <!--list items will be populated by js-->
-        <li data-event="market">Farmers market</li>
-        <li data-event="hdkhfewjk">dhjdjkh</li>
       </ul>
     </div>
 
