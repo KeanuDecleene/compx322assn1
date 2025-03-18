@@ -3,40 +3,63 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("homeButton")
     .addEventListener("click", showEventTitles);
+  document
+    .getElementById("updateEventBtn")
+    .addEventListener("click", updateEvent);
 });
 
+let eventIdStore; //to store the id of current selected event
+
 /**
- * Updates the event details in db
+ *updates the event details in db
  */
 const updateEvent = () => {
   const updateRequest = new XMLHttpRequest();
-  //get form inputs
+  //gets the current form inputs
   eName = document.getElementById("eventName").value;
   cat = document.getElementById("category").value;
   month = document.getElementById("month").value;
   day = document.getElementById("day").value;
   time = document.getElementById("time").value;
   cost = document.getElementById("cost").value;
-  location = document.getElementById("location").value;
+  eventLocation = document.getElementById("location").value;
   notes = document.getElementById("notes").value;
 
   let url = "event_update.php";
-  updateRequest.onload = eventUpdate;
-  updateRequest.open("POST", url, true);
+  updateRequest.onload = () => {
+    eventUpdate(updateRequest.responseText);
+  };
+  updateRequest.open("POST", url);
   updateRequest.setRequestHeader("Content-Type", "application/json");
 
   //set up json string to send to db
   let data = {
+    id: eventIdStore,
     eName: eName,
     cat: cat,
     month: month,
     day: day,
     time: time,
     cost: cost,
-    location: location,
+    location: eventLocation,
     notes: notes,
   };
   updateRequest.send(JSON.stringify(data));
+};
+
+/**
+ * uses the response from the server to display a message to the user that disappears after 4 seconds
+ * @param {string} responseText - the response from the server
+ */
+let eventUpdate = (responseText) => {
+  let updateElement = document.getElementById("event_update");
+  updateElement.innerHTML = responseText;
+  updateElement.style.display = "block";
+
+  //sets a timeout to hide response message after 4 seconds (4000 milliseconds)
+  setTimeout(() => {
+    updateElement.style.display = "none";
+  }, 4000);
 };
 
 /**
@@ -85,6 +108,9 @@ const fetchEventDetails = (eventId) => {
         document.getElementById("cost").value = event.cost;
         document.getElementById("location").value = event.location;
         document.getElementById("notes").value = event.notes;
+
+        //sets the eventId to the fetched event's ID
+        eventIdStore = eventId;
 
         //hides event list and shows the event details
         document.querySelector(".eventList").style.display = "none";

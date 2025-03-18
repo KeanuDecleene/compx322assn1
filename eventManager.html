@@ -7,16 +7,16 @@
     <script src="./events.js"></script>
   </head>
   <body>
-    <button id="homeButton" onclick="fetchEvents()">Home</button>
+    <button id="homeButton">Home</button>
     <h1>Upcoming Local Events</h1>
     <div class="eventList">
       <ul id="events">
-        <!--list items will be populated by js-->
+        <!--list will be-->
       </ul>
     </div>
 
     <div class="eventDetails" style="display: none">
-      <h2>Event Details</h2>
+      <h2>Event Details:</h2>
       <form id="eventForm">
         <label for="eventName">Name:</label>
         <input type="text" id="eventName" />
@@ -41,16 +41,14 @@
 
         <label for="notes">Notes:</label>
         <textarea id="notes"></textarea>
-
-        <div id="buttonContainer">
-          <button type="button" id="updateEventBtn" onclick="updateEvent()">
-            Update
-          </button>
-          <button type="button" id="getWeatherBtn" onclick="getWeather()">
-            Get Weather
-          </button>
-        </div>
       </form>
+
+      <!-- Move the buttons outside the form -->
+      <div id="buttonContainer">
+        <button type="button" id="updateEventBtn">Update</button>
+        <button type="button" id="getWeatherBtn">Get Weather</button>
+      </div>
+      <div id="event_update"></div>
     </div>
   </body>
 </html>

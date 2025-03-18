@@ -10,7 +10,12 @@ body {
 
 h1 {
   font-size: 60px;
-  margin-top: 100px;
+  margin-top: 50px;
+}
+
+h2 {
+  font-size: 50px;
+  margin-top: 10px;
 }
 
 #homeButton {
@@ -66,11 +71,41 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-items: center;
+}
+#eventForm label {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+#eventForm input[type="text"],
+#eventForm textarea {
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+  padding: 10px;
+}
+#eventForm textarea {
+  resize: vertical;
 }
 
 #buttonContainer {
   display: flex;
   justify-content: center;
-  gap: 10px; /* Space between buttons */
-  margin-top: 15px;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+#buttonContainer button {
+  font-size: 20px;
+  padding: 10px 20px;
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+}
+
+#event_update {
+  margin-top: 10px;
+  color: green;
+  font-weight: bold;
 }
