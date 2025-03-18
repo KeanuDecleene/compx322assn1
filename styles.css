@@ -30,6 +30,8 @@ h1 {
   align-content: center;
   justify-content: center;
   padding: 20px;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 #events {
