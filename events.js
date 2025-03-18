@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
- * Fetches event titles from the database and displays them in a list
+ * fetches event titles from the database and displays them in a list
  */
 const displayEventTitles = () => {
   //new xml request to fetch the events data
@@ -22,7 +22,7 @@ const displayEventTitles = () => {
       events.forEach((event, index) => {
         const li = document.createElement("li");
         li.textContent = event;
-        li.addEventListener("click", () => fetchEventDetails(index + 1)); // on click fetches event details and assumes id starts at 1
+        li.addEventListener("click", () => fetchEventDetails(index + 1)); //on click fetches event details and assumes id starts at 1
         eventList.appendChild(li);
       });
     }
@@ -31,8 +31,8 @@ const displayEventTitles = () => {
 };
 
 /**
- * Fetches and displays the details of a specific event
- * @param {number} eventId - The ID of the event to fetch details for
+ * fetches and displays the details of a specific event
+ * @param {number} eventId - the ID of the event to fetch details for
  */
 const fetchEventDetails = (eventId) => {
   const detailsRequest = new XMLHttpRequest();
@@ -64,7 +64,7 @@ const fetchEventDetails = (eventId) => {
 };
 
 /**
- * Displays the event titles list and hides the event details view
+ * displays the event titles list and hides the event details view
  */
 const showEventTitles = () => {
   document.querySelector(".eventList").style.display = "block";
