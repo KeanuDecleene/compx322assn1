@@ -6,6 +6,40 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
+ * Updates the event details in db
+ */
+const updateEvent = () => {
+  const updateRequest = new XMLHttpRequest();
+  //get form inputs
+  eName = document.getElementById("eventName").value;
+  cat = document.getElementById("category").value;
+  month = document.getElementById("month").value;
+  day = document.getElementById("day").value;
+  time = document.getElementById("time").value;
+  cost = document.getElementById("cost").value;
+  location = document.getElementById("location").value;
+  notes = document.getElementById("notes").value;
+
+  let url = "event_update.php";
+  updateRequest.onload = eventUpdate;
+  updateRequest.open("POST", url, true);
+  updateRequest.setRequestHeader("Content-Type", "application/json");
+
+  //set up json string to send to db
+  let data = {
+    eName: eName,
+    cat: cat,
+    month: month,
+    day: day,
+    time: time,
+    cost: cost,
+    location: location,
+    notes: notes,
+  };
+  updateRequest.send(JSON.stringify(data));
+};
+
+/**
  * fetches event titles from the database and displays them in a list
  */
 const displayEventTitles = () => {
