@@ -35,7 +35,7 @@ const getWeather = () => {
       latitude: latitude,
     }),
   })
-    .then((response) => response.json()) //getting the response in json
+    .then((response) => response.json()) //turns response object into json object
     .then((data) => {
       //handle the weather data and update the HTML
       if (data) {
@@ -57,7 +57,7 @@ const getWeather = () => {
           <p><strong>Weather:</strong> ${weatherDescription}</p>
         `;
 
-        //display the weather info div with the formatted info
+        //display the weather info with the formatted info
         document.getElementById("weatherInfo").innerHTML = weatherInfoHTML;
       } else {
         document.getElementById("weatherInfo").innerHTML =
