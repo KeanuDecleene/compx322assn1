@@ -5,7 +5,6 @@ include 'dbConnect.php';
 $jsondata = file_get_contents('php://input');
 $data = json_decode($jsondata, true);
 
-//get the values 
 $eventId = $data['id'];
 $ename = mysqli_real_escape_string($conn, $data['eName']); //escaping apostraphe was breaking SQL query
 $cat = $data['cat'];
