@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  //initialise all event listeners and display the event titles
   displayEventTitles();
   document
     .getElementById("homeButton")
@@ -8,16 +9,69 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("click", updateEvent);
   document
     .getElementById("getWeatherBtn")
-    .addEventListener("click", openWeatherMap);
+    .addEventListener("click", getWeather);
 });
 
-let eventIdStore; //to store the id of current selected event
-let longLat = [];
-
-const openWeatherMap = () => {};
+let eventIdStore; //store the id of event
+let longLat = []; //store the long lat of event
+let eventLocation; //store the location of the event
 
 /**
- *updates the event details in db
+ * gets the weather for the current event based on longitude and latitude
+ * calls php script to get the wanted json data from API returned back into this method
+ * to then display the weather information
+ */
+const getWeather = () => {
+  const [latitude, longitude] = longLat;
+
+  //sends the longitude and latitude in a POST request to server
+  fetch("fetch_weather.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      longitude: longitude,
+      latitude: latitude,
+    }),
+  })
+    .then((response) => response.json()) //getting the response in json
+    .then((data) => {
+      //handle the weather data and update the HTML
+      if (data) {
+        const currentTemp = data.current_temp;
+        const minTemp = data.min_temp;
+        const maxTemp = data.max_temp;
+        const windSpeed = data.wind_speed;
+        const cloudCover = data.cloud_cover;
+        const weatherDescription = data.description;
+
+        //format the weather information as a string for html
+        const weatherInfoHTML = `
+          <h2>Current Weather at ${eventLocation}:</h2>
+          <p><strong>Temperature:</strong> ${currentTemp}°C</p>
+          <p><strong>Min Temperature:</strong> ${minTemp}°C</p>
+          <p><strong>Max Temperature:</strong> ${maxTemp}°C</p>
+          <p><strong>Wind Speed:</strong> ${windSpeed} m/s</p>
+          <p><strong>Cloud Cover:</strong> ${cloudCover}%</p>
+          <p><strong>Weather:</strong> ${weatherDescription}</p>
+        `;
+
+        //display the weather info div with the formatted info
+        document.getElementById("weatherInfo").innerHTML = weatherInfoHTML;
+      } else {
+        document.getElementById("weatherInfo").innerHTML =
+          "<p>Unable to fetch weather data. Invalid data received.</p>";
+      }
+    })
+    .catch((error) => {
+      document.getElementById("weatherInfo").innerHTML =
+        "<p>Error fetching weather data.</p>";
+    });
+};
+
+/**
+ *updates the event details in db through AJAX request
  */
 const updateEvent = () => {
   const updateRequest = new XMLHttpRequest();
@@ -38,7 +92,7 @@ const updateEvent = () => {
   updateRequest.open("POST", url);
   updateRequest.setRequestHeader("Content-Type", "application/json");
 
-  //set up json string to send to db
+  //sets up json to send to server to then update db
   let data = {
     id: eventIdStore,
     eName: eName,
@@ -115,13 +169,13 @@ const fetchEventDetails = (eventId) => {
         document.getElementById("location").value = event.location;
         document.getElementById("notes").value = event.notes;
 
-        //sets the eventId to the fetched event's ID
+        //sets the needed properties for other methods to work
         eventIdStore = eventId;
-        //sets the longitude and latitude to the fetched event's longitude and latitude
         const lonLatArray = event.lon_lat
           .split(",")
           .map((coord) => parseFloat(coord.trim()));
         longLat = lonLatArray;
+        eventLocation = event.location;
 
         //hides event list and shows the event details
         document.querySelector(".eventList").style.display = "none";
@@ -135,9 +189,10 @@ const fetchEventDetails = (eventId) => {
 };
 
 /**
- * displays the event titles list and hides the event details view
+ * displays the event titles list, hides the event details, hides weather info
  */
 const showEventTitles = () => {
+  document.getElementById("weatherInfo").innerHTML = "";
   document.querySelector(".eventList").style.display = "block";
   document.querySelector(".eventList").style.margin = "0 auto";
   document.querySelector(".eventList").style.maxWidth = "480px";

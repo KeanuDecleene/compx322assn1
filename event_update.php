@@ -29,5 +29,4 @@ if($conn->query($query)){
 };
 
 $conn->close();
-
 ?>
