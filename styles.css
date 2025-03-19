@@ -109,3 +109,8 @@ h2 {
   color: green;
   font-weight: bold;
 }
+
+#weatherInfo {
+  margin-top: 30px;
+  font-size: 30px;
+}

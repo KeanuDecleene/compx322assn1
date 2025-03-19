@@ -6,9 +6,15 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("updateEventBtn")
     .addEventListener("click", updateEvent);
+  document
+    .getElementById("getWeatherBtn")
+    .addEventListener("click", openWeatherMap);
 });
 
 let eventIdStore; //to store the id of current selected event
+let longLat = [];
+
+const openWeatherMap = () => {};
 
 /**
  *updates the event details in db
@@ -111,6 +117,11 @@ const fetchEventDetails = (eventId) => {
 
         //sets the eventId to the fetched event's ID
         eventIdStore = eventId;
+        //sets the longitude and latitude to the fetched event's longitude and latitude
+        const lonLatArray = event.lon_lat
+          .split(",")
+          .map((coord) => parseFloat(coord.trim()));
+        longLat = lonLatArray;
 
         //hides event list and shows the event details
         document.querySelector(".eventList").style.display = "none";
