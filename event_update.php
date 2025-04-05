@@ -6,7 +6,7 @@ $jsondata = file_get_contents('php://input');
 $data = json_decode($jsondata, true);
 
 $eventId = $data['id'];
-$ename = mysqli_real_escape_string($conn, $data['eName']); //escaping apostraphe was breaking SQL query
+$ename = $data['eName']; 
 $cat = $data['cat'];
 $month = $data['month'];
 $day = $data['day'];
@@ -16,16 +16,31 @@ $location = strval($data['location']);
 $notes = $data['notes'];
 
 //using an update query to update the event, using id to identify the record
-$query = "UPDATE events 
-        SET name='$ename', category='$cat', month='$month', day='$day', time='$time', cost='$cost', location='$location', notes='$notes' 
-        WHERE id='$eventId'";
+try {
+    $query = "UPDATE events 
+              SET name = :ename, category = :cat, month = :month, 
+                  day = :day, time = :time, cost = :cost, 
+                  location = :location, notes = :notes 
+              WHERE id = :eventId";
+    
+    //prepares the query without executing yet and binds variables
+    $stmt = $conn->prepare($query);
+    $stmt->bindValue(':ename', $ename);
+    $stmt->bindValue(':cat', $cat);
+    $stmt->bindValue(':month', $month);
+    $stmt->bindValue(':day', $day);
+    $stmt->bindValue(':time', $time);
+    $stmt->bindValue(':cost', $cost);
+    $stmt->bindValue(':location', $location);
+    $stmt->bindValue(':notes', $notes);
+    $stmt->bindValue(':eventId', $eventId, PDO::PARAM_INT);
 
-//runs query and checks response
-if($conn->query($query)){
+    $stmt->execute();
+    
     echo "Event updated successfully";
-}else{
-    echo "Error updating event: " . $conn->error;
-};
+} catch (PDOException $e) {
+    echo "Error updating event: " . $e->getMessage();
+}
 
-$conn->close();
+$conn = null;
 ?>

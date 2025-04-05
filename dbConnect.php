@@ -1,14 +1,21 @@
 <?php
-$servername = "localhost";  
-$username = "root";         
-$password = "";             
-$dbname = "events"; 
+$servername = "learn-mysql.cms.waikato.ac.nz";  
+$username = "kd258";         
+$password = "my395645sql";             
+$dbname = "kd258"; 
 
-//creates new MySQL connection 
-$conn = new mysqli($servername, $username, $password, $dbname);
+//create a new PDO instance
+try {
+    //DSN (Data Source Name) for the PDO connection
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    
+    //set PDO to throw exceptions on errors
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    //default fetch mode
+    $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-//checks for connection error
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
+}
 ?>

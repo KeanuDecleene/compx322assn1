@@ -1,22 +1,32 @@
 <?php
-include 'dbConnect.php'; //connects to db
+include 'dbConnect.php';
 
-//sets up the response type query and result
-header('Content-Type: application/json'); 
-$sql = "SELECT name FROM events"; 
-$result = $conn->query($sql);
+//set the response type to JSON
+header('Content-Type: application/json');
 
-$events = [];
-//checks if query was successful and loops through the rows storing event names into $events
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $events[] = $row["name"];
+try {
+    //prepare the SQL query
+    $sql = "SELECT name FROM events"; 
+
+    $query = $conn->query($sql);
+    $events = [];
+
+    //check if the query returns any rows
+    if ($query->rowCount() > 0) {
+        //fetch all the results and store the event names
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $events[] = $row["name"];
+        }
+    } else {
+        echo json_encode(["message" => "No events found."]);
+        exit;
     }
-} else {
-    echo "No events found or query failed.";
-}
+    echo json_encode($events);
 
-//returns only event titles in json format and closes the connection
-echo json_encode($events); 
-$conn->close();
+} catch (PDOException $e) {
+    //handle any query execution errors
+    echo json_encode(["error" => "Query failed: " . $e->getMessage()]);
+}
+//close the connection
+$conn = null;
 ?>
